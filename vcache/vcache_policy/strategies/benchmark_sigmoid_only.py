@@ -423,7 +423,7 @@ class _Algorithm:
         self.P_c: float = 1.0 - self.delta
         self.epsilon_grid: np.ndarray = np.linspace(1e-6, 1 - 1e-6, 50)
         self.logistic_regression: LogisticRegression = LogisticRegression(
-            penalty=None, solver="lbfgs", tol=1e-8, max_iter=1000, fit_intercept=False
+            C=np.inf, solver="lbfgs", tol=1e-8, max_iter=1000, fit_intercept=False
         )
 
     def add_observation_to_metadata(

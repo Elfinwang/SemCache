@@ -1,0 +1,13 @@
+# Installed on top of vCache (`pip install -e .` at the repository root).
+# Versions are the ones the experiments were run with.
+anthropic>=0.40            # tested 0.125.0
+openai>=1.75               # tested 1.109.1
+scikit-learn>=1.2          # tested 1.9.0; used by vCache's estimator
+statsmodels>=0.14.4        # tested 0.14.6; used by vCache's estimator
+torch>=2.6                 # tested 2.8.0
+transformers>=4.51         # tested 4.57.6; Qwen3-Embedding needs >= 4.51
+sentence-transformers>=4.1 # tested 4.1.0
+pandas>=2.3
+numpy>=1.26.4,<2.0
+huggingface_hub[cli]       # model download only
+pytest>=8.0

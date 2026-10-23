@@ -1,0 +1,266 @@
+{
+  "general": [
+    {
+      "tuple_id": "the_irishman:2643722",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "jurassic_world_fallen_kingdom:2482508",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "booksmart:2586843",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "taken_3:2256746",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "the_front_runner_2018:2548583",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "taken_3:2241399",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "avengers_infinity_war:2473324",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "star_wars_the_last_jedi:2442297",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102780270",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "2012:1868747",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "glass_onion_a_knives_out_mystery:102764750",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "wonder_woman_1984:2759009",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "blackkklansman:2556761",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "joker_2019:2624609",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "knives_out:2625165",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "taken_3:2241841",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "once_upon_a_time_in_hollywood:2615499",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "knives_out:2654012",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102779654",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "first_man:102775087",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "little_women_2019:2656124",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "captain_marvel:2564122",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "skyfall:2111450",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "mission_impossible_fallout:2493274",
+      "summary": "POSITIVE"
+    }
+  ],
+  "ant_man_pairs": [
+    {
+      "tuple_id": "pair:102780165:102780607",
+      "summary": "NEGATIVE vs NEGATIVE"
+    },
+    {
+      "tuple_id": "pair:102780725:102781954",
+      "summary": "NEGATIVE vs NEGATIVE"
+    },
+    {
+      "tuple_id": "pair:102781334:102780006",
+      "summary": "POSITIVE vs POSITIVE"
+    },
+    {
+      "tuple_id": "pair:102779686:102782779",
+      "summary": "POSITIVE vs POSITIVE"
+    },
+    {
+      "tuple_id": "pair:102779984:102779560",
+      "summary": "NEGATIVE vs POSITIVE"
+    },
+    {
+      "tuple_id": "pair:102781291:102780028",
+      "summary": "POSITIVE vs NEGATIVE"
+    },
+    {
+      "tuple_id": "pair:102780632:102779490",
+      "summary": "POSITIVE vs POSITIVE"
+    },
+    {
+      "tuple_id": "pair:102780910:102781420",
+      "summary": "NEGATIVE vs NEGATIVE"
+    },
+    {
+      "tuple_id": "pair:102780491:102781828",
+      "summary": "NEGATIVE vs POSITIVE"
+    },
+    {
+      "tuple_id": "pair:102780414:102781867",
+      "summary": "NEGATIVE vs POSITIVE"
+    },
+    {
+      "tuple_id": "pair:102780668:102781777",
+      "summary": "POSITIVE vs POSITIVE"
+    },
+    {
+      "tuple_id": "pair:102782142:102779486",
+      "summary": "POSITIVE vs POSITIVE"
+    }
+  ],
+  "taken_3": [
+    {
+      "tuple_id": "taken_3:2241826",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "taken_3:2241860",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "taken_3:2241669",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "taken_3:2829828",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "taken_3:2240508",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "taken_3:2321621",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "taken_3:2241563",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "taken_3:2241658",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "taken_3:2241618",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "taken_3:2256746",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "taken_3:2241513",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "taken_3:2241760",
+      "summary": "NEGATIVE"
+    }
+  ],
+  "ant_man": [
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102780001",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102780028",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102782182",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102779585",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102780028",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102782182",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102779524",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102779557",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102779968",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102779596",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102781005",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102780513",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102782149",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102780725",
+      "summary": "NEGATIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102779563",
+      "summary": "POSITIVE"
+    },
+    {
+      "tuple_id": "ant_man_and_the_wasp_quantumania:102781469",
+      "summary": "POSITIVE"
+    }
+  ]
+}
