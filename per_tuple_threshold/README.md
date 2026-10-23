@@ -369,20 +369,43 @@ The pipeline has two stages that share one run directory.
 ### 6.1 Stage 1: calibrate
 
 Generates `q'` with the LLM, labels every tuple, and fits `t(d)` per tuple and a
-pooled `t(q)`:
+pooled `t(q)`. Set the data and embedding paths once, then pick one LLM provider:
 
 ```bash
 conda activate vcache
 cd /path/to/vCache
 
-export ANTHROPIC_AUTH_TOKEN="sk-..."
-export ANTHROPIC_BASE_URL="https://api.camel-hub.com"
 export EMBEDDING_MODEL=/path/to/embedding/model/Qwen3-Embedding-8B
 export SEMBENCH_ROOT=/path/to/SemBench
+```
 
-python -m per_tuple_threshold calibrate
+**Option A: Anthropic (Claude, default)**
+
+```bash
+export ANTHROPIC_AUTH_TOKEN="sk-..."                   # or ANTHROPIC_API_KEY
+export ANTHROPIC_BASE_URL="https://api.camel-hub.com"  # optional; omit for api.anthropic.com
+
+python -m per_tuple_threshold calibrate               # default model: claude-sonnet-4-5-20250929
 # -> experiments/per_tuple_threshold/results/run_<YYYYmmdd_HHMMSS>/
 ```
+
+**Option B: OpenAI (GPT)**
+
+```bash
+export OPENAI_API_KEY="sk-..."
+export OPENAI_BASE_URL="https://api.camel-hub.com/v1"  # optional; omit for api.openai.com
+
+python -m per_tuple_threshold calibrate --llm-provider openai --llm-model gpt-4o
+# A gpt-* model name alone also selects OpenAI:
+python -m per_tuple_threshold calibrate --llm-model gpt-4.1
+# Or configure it through the environment:
+export LLM_PROVIDER=openai LLM_MODEL=gpt-4o
+python -m per_tuple_threshold calibrate
+```
+
+Use a non-reasoning chat model for OpenAI (GPT-4o / GPT-4.1 families); see 5.2.
+Both providers write the same output files. The label cache is keyed by model
+name, so give each model its own `--output` directory when comparing models.
 
 Useful options:
 
