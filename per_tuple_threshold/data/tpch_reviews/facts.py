@@ -74,8 +74,8 @@ def load_facts(path: Path) -> pd.DataFrame:
             f"{path} not found. Build it first on a machine with internet access:\n"
             "  python -m per_tuple_threshold.data.tpch_reviews.generate --dbgen-only --out <dir>"
         )
+    # Plain tables after dbgen: no extension is loaded, so this works offline on GPU nodes.
     with duckdb.connect(str(path), read_only=True) as con:
-        con.execute("LOAD tpch")
         frame = con.execute(FACTS_SQL).fetchdf()
     return frame.dropna(subset=["stratum"]).reset_index(drop=True)
 

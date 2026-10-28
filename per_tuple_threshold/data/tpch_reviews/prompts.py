@@ -17,7 +17,7 @@ PROMPT_VERSION = "gen-v1"
 
 GENERATION_MAX_TOKENS = 200
 GENERATION_TEMPERATURE = 0.8
-VALIDATION_MAX_TOKENS = 40
+VALIDATION_MAX_TOKENS = 80
 VALIDATION_TEMPERATURE = 0.0
 
 SHIP_MODES = {
@@ -68,7 +68,7 @@ VALIDATION_TEMPLATE = """Facts about an order:
 Customer review:
 \"\"\"{review}\"\"\"
 
-Answer three questions about the review, one per line, in exactly this format:
+Answer three questions about the review. Reply with exactly these three lines and nothing else:
 CONTRADICTS: YES or NO  (does the review state anything that contradicts the facts? Not mentioning a fact is not a contradiction.)
 RATING: YES or NO  (does the review give a star rating, a score, or a number out of 5?)
 SENTIMENT: POSITIVE or NEGATIVE  (overall, is the customer satisfied with the purchase?)"""
@@ -139,8 +139,12 @@ def validation_prompt(item: Mapping, review: str) -> str:
     return VALIDATION_TEMPLATE.format(facts=describe_facts(item), review=review)
 
 
+_PREAMBLE_RE = re.compile(r"^(here(?:'s| is)[^\n:]*|review|sure[^\n:]*):\s*", re.IGNORECASE)
+
+
 def clean_review(text: str) -> str:
-    """Strip whitespace and wrapping quotes the model sometimes adds."""
+    """Strip whitespace, a leading "Here is the review:" line, and wrapping quotes."""
+    text = _PREAMBLE_RE.sub("", text.strip())
     return text.strip().strip('"“”').strip()
 
 

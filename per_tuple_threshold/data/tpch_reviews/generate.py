@@ -6,7 +6,8 @@
     # inspect the sample and design without any LLM call
     python -m per_tuple_threshold.data.tpch_reviews.generate --dry-run --n 30 --out DIR
 
-    # generate reviews (an OpenAI-compatible server such as vLLM must be running)
+    # generate reviews against a local server (e.g. vLLM), selected by LLM_BASE_URL
+    LLM_BASE_URL=http://localhost:8000/v1 \
     python -m per_tuple_threshold.data.tpch_reviews.generate --n 30 --llm-model llama-3.1-8b --out DIR
 
 Steps: facts -> stratified sample -> truth/clarity -> write review -> validate
@@ -24,6 +25,7 @@ import hashlib
 import json
 import logging
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -32,7 +34,7 @@ import pandas as pd
 from per_tuple_threshold import config
 from per_tuple_threshold.data.tpch_reviews import facts as tpch_facts
 from per_tuple_threshold.data.tpch_reviews import prompts
-from per_tuple_threshold.llm.client import ChatClient, make_client
+from per_tuple_threshold.llm.client import LOCAL_BASE_URL_ENV, PROVIDERS, ChatClient, make_client
 from per_tuple_threshold.pipeline import io
 
 logger = logging.getLogger(__name__)
@@ -46,6 +48,7 @@ DRY_RUN = "sample_dry_run.parquet"
 
 POPULATION = "tpch_reviews"
 MAX_RETRIES = 2
+REQUEST_ATTEMPTS = 5
 FLUSH_EVERY = 20
 
 
@@ -67,13 +70,25 @@ class GenerationCache:
             cached = self.entries.get(key)
         if cached is not None:
             return cached
-        text = self.client.complete([{"role": "user", "content": prompt}], max_tokens, temperature)
+        text = self._request(prompt, max_tokens, temperature)
         with self._lock:
             self.entries[key] = text
             self.api_calls += 1
             if self.api_calls % FLUSH_EVERY == 0:
                 self._write()
         return text
+
+    def _request(self, prompt: str, max_tokens: int, temperature: float) -> str:
+        """Call the model, retrying connection errors and rate limits with backoff."""
+        last_error: Exception | None = None
+        for attempt in range(REQUEST_ATTEMPTS):
+            try:
+                return self.client.complete([{"role": "user", "content": prompt}], max_tokens, temperature)
+            except Exception as exc:  # noqa: BLE001 - provider SDKs raise many types
+                last_error = exc
+                logger.warning("LLM request failed (%s), retry %d/%d", exc, attempt + 1, REQUEST_ATTEMPTS)
+                time.sleep(min(2**attempt, 30))
+        raise RuntimeError(f"LLM request failed after {REQUEST_ATTEMPTS} attempts: {last_error}") from last_error
 
     def flush(self) -> None:
         with self._lock:
@@ -119,13 +134,15 @@ def generate_reviews(items: pd.DataFrame, client: ChatClient, cache_path: Path, 
     cache = GenerationCache(client, cache_path)
     records = items.to_dict("records")
     results: dict[int, dict] = {}
-    with ThreadPoolExecutor(max_workers=workers) as pool:
-        futures = {pool.submit(review_item, record, cache): index for index, record in enumerate(records)}
-        for done, future in enumerate(as_completed(futures), start=1):
-            results[futures[future]] = future.result()
-            if done % 25 == 0 or done == len(futures):
-                logger.info("Reviewed %d/%d, new LLM calls %d", done, len(futures), cache.api_calls)
-    cache.flush()
+    try:
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            futures = {pool.submit(review_item, record, cache): index for index, record in enumerate(records)}
+            for done, future in enumerate(as_completed(futures), start=1):
+                results[futures[future]] = future.result()
+                if done % 25 == 0 or done == len(futures):
+                    logger.info("Reviewed %d/%d, new LLM calls %d", done, len(futures), cache.api_calls)
+    finally:
+        cache.flush()  # keep every paid-for answer, even if the run dies; rerun to resume
     return pd.concat([items.reset_index(drop=True), pd.DataFrame([results[i] for i in range(len(records))])], axis=1)
 
 
@@ -193,7 +210,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--dbgen-only", action="store_true", help="Build tpch.duckdb and stop (needs internet).")
     parser.add_argument("--dry-run", action="store_true", help="Sample and assign the design, no LLM calls.")
     parser.add_argument("--llm-model", default=None, help="Generator model, as served (e.g. llama-3.1-8b).")
-    parser.add_argument("--llm-provider", choices=["anthropic", "openai"], default=None)
+    parser.add_argument(
+        "--llm-provider",
+        choices=sorted(PROVIDERS),
+        default=None,
+        help=f"Default: local if {LOCAL_BASE_URL_ENV} is set, else inferred from --llm-model.",
+    )
     parser.add_argument("--workers", type=int, default=8, help="Parallel LLM requests.")
     parser.add_argument("-v", "--verbose", action="store_true", help="Debug logging.")
     return parser
@@ -206,6 +228,7 @@ def main(argv: list[str] | None = None, client: ChatClient | None = None) -> Non
         format="%(asctime)s %(levelname)s %(name)s: %(message)s",
         datefmt="%H:%M:%S",
     )
+    logging.getLogger("httpx").setLevel(logging.WARNING)  # one INFO line per request otherwise
     out = args.out
     out.mkdir(parents=True, exist_ok=True)
 

@@ -118,3 +118,44 @@ def test_generate_end_to_end_with_fake_client(tmp_path):
     calls = client.calls
     G.generate_reviews(items, client, tmp_path / G.CACHE, workers=4)
     assert client.calls == calls  # resumed entirely from cache
+
+
+@pytest.mark.parametrize("raw", [
+    'Here is the review:\n"Great part, arrived early."',
+    "Here's a short review: Great part, arrived early.",
+    "Review: Great part, arrived early.",
+    "  “Great part, arrived early.”  ",
+])
+def test_clean_review_strips_preamble_and_quotes(raw):
+    assert P.clean_review(raw) == "Great part, arrived early."
+
+
+def test_request_retries_transient_errors(tmp_path, monkeypatch):
+    monkeypatch.setattr(G.time, "sleep", lambda seconds: None)
+
+    class Flaky(FakeClient):
+        def complete(self, messages, max_tokens, temperature):
+            self.calls += 1
+            if self.calls < 3:
+                raise ConnectionError("server not ready")
+            return "ok"
+
+    client = Flaky()
+    cache = G.GenerationCache(client, tmp_path / "cache.json")
+    assert cache.complete("generate", "p", 0, 10, 0.0) == "ok"
+    assert client.calls == 3
+
+
+def test_cache_is_saved_when_a_run_dies(tmp_path, monkeypatch):
+    monkeypatch.setattr(G.time, "sleep", lambda seconds: None)
+
+    class DiesLater(FakeClient):
+        def complete(self, messages, max_tokens, temperature):
+            if self.calls >= 4:
+                raise ConnectionError("server gone")
+            return super().complete(messages, max_tokens, temperature)
+
+    items = F.assign_design(F.sample_items(_facts(), 12, seed=0), seed=0)
+    with pytest.raises(RuntimeError, match="failed after"):
+        G.generate_reviews(items, DiesLater(), tmp_path / G.CACHE, workers=1)
+    assert len(json.loads((tmp_path / G.CACHE).read_text())) == 4
