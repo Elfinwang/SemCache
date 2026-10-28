@@ -12,3 +12,4 @@ numpy>=1.26.4,<2.0
 huggingface_hub[cli]       # model download only
 pytest>=8.0
 duckdb>=1.1                # TPC-H review generator only (data/tpch_reviews)
+pyarrow>=14,<20            # parquet I/O; pyarrow 20+ needs NumPy 2, vCache pins NumPy < 2

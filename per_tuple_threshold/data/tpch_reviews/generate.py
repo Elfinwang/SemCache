@@ -208,6 +208,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--n", type=int, default=300, help="Number of reviews.")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--dbgen-only", action="store_true", help="Build tpch.duckdb and stop (needs internet).")
+    parser.add_argument("--force", action="store_true", help="With --dbgen-only: delete and rebuild an existing tpch.duckdb.")
     parser.add_argument("--dry-run", action="store_true", help="Sample and assign the design, no LLM calls.")
     parser.add_argument("--llm-model", default=None, help="Generator model, as served (e.g. llama-3.1-8b).")
     parser.add_argument(
@@ -233,6 +234,10 @@ def main(argv: list[str] | None = None, client: ChatClient | None = None) -> Non
     out.mkdir(parents=True, exist_ok=True)
 
     if args.dbgen_only:
+        if (out / DATABASE).exists():
+            if not args.force:
+                raise SystemExit(f"{out / DATABASE} already exists; pass --force to rebuild it from scratch.")
+            (out / DATABASE).unlink()
         tpch_facts.build_database(out / DATABASE, args.sf)
         logger.info("Built %s (sf=%s)", out / DATABASE, args.sf)
         return
