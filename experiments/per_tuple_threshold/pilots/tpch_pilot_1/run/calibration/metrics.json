@@ -1,0 +1,93 @@
+{
+  "dataset": "tpch",
+  "llm": {
+    "provider": "local",
+    "model": "qwen/qwen3.8-27b",
+    "label_api_calls": 20,
+    "label_cache_entries": 810
+  },
+  "predicates": [
+    {
+      "id": "tpch_positive",
+      "kind": "yes_no",
+      "population": "tpch_reviews",
+      "covers": [],
+      "base": "Determine if the following product review is clearly positive.",
+      "n_tuples": 30,
+      "n_fit_queries": 21,
+      "n_eval_queries": 6,
+      "t_hat_min": 0.0,
+      "t_hat_max": 0.789,
+      "n_no_threshold": 14,
+      "n_zero_threshold": 1,
+      "global_threshold": {
+        "t_hat": 0.232,
+        "gamma": 3.113,
+        "var_t": 0.0017486206735647428,
+        "reason": "ok"
+      },
+      "held_out": {
+        "paraphrase": {
+          "per_tuple": {
+            "decisions": 120,
+            "reuses": 4,
+            "correct_reuses": 4,
+            "false_reuses": 0,
+            "correct_rejects": 34,
+            "precision": 1.0,
+            "decision_accuracy": 0.31666666666666665
+          },
+          "unified": {
+            "decisions": 120,
+            "reuses": 120,
+            "correct_reuses": 86,
+            "false_reuses": 34,
+            "correct_rejects": 0,
+            "precision": 0.7166666666666667,
+            "decision_accuracy": 0.7166666666666667
+          }
+        },
+        "unrelated": {
+          "per_tuple": {
+            "decisions": 60,
+            "reuses": 2,
+            "correct_reuses": 2,
+            "false_reuses": 0,
+            "correct_rejects": 30,
+            "precision": 1.0,
+            "decision_accuracy": 0.5333333333333333
+          },
+          "unified": {
+            "decisions": 60,
+            "reuses": 60,
+            "correct_reuses": 30,
+            "false_reuses": 30,
+            "correct_rejects": 0,
+            "precision": 0.5,
+            "decision_accuracy": 0.5
+          }
+        },
+        "all": {
+          "per_tuple": {
+            "decisions": 180,
+            "reuses": 6,
+            "correct_reuses": 6,
+            "false_reuses": 0,
+            "correct_rejects": 64,
+            "precision": 1.0,
+            "decision_accuracy": 0.3888888888888889
+          },
+          "unified": {
+            "decisions": 180,
+            "reuses": 180,
+            "correct_reuses": 116,
+            "false_reuses": 64,
+            "correct_rejects": 0,
+            "precision": 0.6444444444444445,
+            "decision_accuracy": 0.6444444444444445
+          }
+        }
+      }
+    }
+  ]
+}

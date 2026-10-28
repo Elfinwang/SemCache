@@ -24,3 +24,5 @@ bin/*
 # Per-tuple threshold experiments: outputs stay local; the frozen sample is tracked
 experiments/per_tuple_threshold/results/
 !per_tuple_threshold/data/sample_ids.json
+# Shared pilot bundles (small, self-contained, rerunnable without API calls)
+!experiments/per_tuple_threshold/pilots/**/*.json

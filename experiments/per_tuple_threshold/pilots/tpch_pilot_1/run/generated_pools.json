@@ -1,0 +1,60 @@
+{
+  "tpch_positive": {
+    "paraphrase": [
+      "Is the sentiment of this industrial part review unambiguously favorable?",
+      "Does the customer express a distinctly good opinion of the industrial component?",
+      "Can the tone of this review be classified as overwhelmingly positive?",
+      "Is the reviewer's verdict on this industrial part explicitly affirmative?",
+      "Does the text indicate a clear satisfaction with the purchased industrial item?",
+      "Is there no ambiguity in the positive nature of this product evaluation?",
+      "Would you label this review of the industrial part as strongly favorable?",
+      "Does the customer's feedback on this component reflect a definite positive stance?",
+      "Is the overall impression left by this industrial part review purely upbeat?",
+      "Can we confirm that this review expresses a clear endorsement of the product?",
+      "Does the language used in this review signal a distinct approval of the industrial part?",
+      "Is the reviewer's experience with this component described in unequivocally positive terms?",
+      "Does this evaluation of the industrial part convey a clear sense of satisfaction?",
+      "Is the sentiment analysis of this review likely to yield a high positive score?",
+      "Does the customer's comment on this industrial item reflect a definite favorable judgment?",
+      "Is the tone of this review regarding the industrial part unmistakably constructive?"
+    ],
+    "intensity": [
+      "Is the review mildly favorable regarding the industrial part?",
+      "Does the reviewer express slight satisfaction with the component?",
+      "Is the positive sentiment in this review barely perceptible?",
+      "Does the customer show a weak approval of the industrial item?",
+      "Is the review overwhelmingly enthusiastic about the industrial part?",
+      "Does the customer express extreme delight with the component?",
+      "Is the praise for this industrial item intense and unreserved?",
+      "Does the reviewer describe the experience as exceptionally great?"
+    ],
+    "should_reuse": [
+      "Is the sentiment of this review clearly positive?",
+      "Does this review indicate a positive opinion?",
+      "Is the customer satisfied with the industrial part?",
+      "Is the tone of this evaluation favorable?",
+      "Does the review express approval of the product?",
+      "Is the feedback on this component affirmative?"
+    ],
+    "should_not_reuse": [
+      "Does the review mention that the packaging was damaged?",
+      "Is the included manual easy to understand?",
+      "Does the customer complain about the shipping cost?",
+      "Is the color of the part as described in the listing?",
+      "Does the reviewer mention the weight of the component?",
+      "Is the customer asking for a replacement?",
+      "Does the review specify the date of purchase?",
+      "Is the reviewer a professional engineer?"
+    ],
+    "unrelated": [
+      "What is the part number of the item?",
+      "Which brand manufactured this component?",
+      "What material is the industrial part made of?",
+      "Does the review mention the price of the item?",
+      "Is the customer located in Europe?",
+      "What is the model year of the machinery?",
+      "Does the review include a photo of the product?",
+      "Is the seller a verified merchant?"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+== t(d) by clarity
+clarity      n fitted all_match failed  mean t (fitted)  mean t (all_match=0)
+-----------------------------------------------------------------------------
+high         9      5         4      0            0.597                 0.332
+medium      10      5         5      0            0.597                 0.299
+low         11      6         5      0            0.547                 0.298
+all         30     16        14      0            0.578                 0.308
+
+== calibration
+predicate              n    t(d) range   t(q)  held-out all: per-tuple    unified                   
+----------------------------------------------------------------------------------------------------
+tpch_positive         30   0.000-0.789  0.232  6/180 (0) 100.0%           180/180 (64) 64.4%        
+
+== prediction (default)
+predicate               N/M  margin  LOO MAE  predicted              oracle                 global                
+------------------------------------------------------------------------------------------------------------------
+tpch_positive         20/30   0.200    0.152  20/60 (0) 100.0%       0/60 (0) -             60/60 (24) 60.0%      
+                       mean predicted t by clarity: high: 0.464 (n=4), low: 0.377 (n=4), medium: 0.419 (n=2)
+
+== prediction (all-match-as-zero)
+predicate               N/M  margin  LOO MAE  predicted              oracle                 global                
+------------------------------------------------------------------------------------------------------------------
+tpch_positive         20/30   0.111    0.084  22/60 (0) 100.0%       24/60 (0) 100.0%       60/60 (24) 60.0%      
+                       mean predicted t by clarity: high: 0.464 (n=4), low: 0.348 (n=4), medium: 0.447 (n=2)

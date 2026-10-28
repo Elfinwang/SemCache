@@ -1,0 +1,124 @@
+{
+  "tpch_reviews": [
+    {
+      "tuple_id": "tpch:pilot:00",
+      "summary": "truth=negative clarity=high stratum=returned"
+    },
+    {
+      "tuple_id": "tpch:pilot:01",
+      "summary": "truth=negative clarity=high stratum=returned"
+    },
+    {
+      "tuple_id": "tpch:pilot:02",
+      "summary": "truth=negative clarity=high stratum=late"
+    },
+    {
+      "tuple_id": "tpch:pilot:03",
+      "summary": "truth=negative clarity=high stratum=late"
+    },
+    {
+      "tuple_id": "tpch:pilot:04",
+      "summary": "truth=negative clarity=low stratum=returned"
+    },
+    {
+      "tuple_id": "tpch:pilot:05",
+      "summary": "truth=negative clarity=low stratum=returned"
+    },
+    {
+      "tuple_id": "tpch:pilot:06",
+      "summary": "truth=negative clarity=low stratum=late"
+    },
+    {
+      "tuple_id": "tpch:pilot:07",
+      "summary": "truth=negative clarity=low stratum=late"
+    },
+    {
+      "tuple_id": "tpch:pilot:08",
+      "summary": "truth=negative clarity=low stratum=late"
+    },
+    {
+      "tuple_id": "tpch:pilot:09",
+      "summary": "truth=negative clarity=medium stratum=returned"
+    },
+    {
+      "tuple_id": "tpch:pilot:10",
+      "summary": "truth=negative clarity=medium stratum=returned"
+    },
+    {
+      "tuple_id": "tpch:pilot:11",
+      "summary": "truth=negative clarity=medium stratum=returned"
+    },
+    {
+      "tuple_id": "tpch:pilot:12",
+      "summary": "truth=negative clarity=medium stratum=late"
+    },
+    {
+      "tuple_id": "tpch:pilot:13",
+      "summary": "truth=negative clarity=medium stratum=late"
+    },
+    {
+      "tuple_id": "tpch:pilot:14",
+      "summary": "truth=positive clarity=high stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:15",
+      "summary": "truth=positive clarity=high stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:16",
+      "summary": "truth=positive clarity=high stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:17",
+      "summary": "truth=positive clarity=high stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:18",
+      "summary": "truth=positive clarity=high stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:19",
+      "summary": "truth=positive clarity=low stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:20",
+      "summary": "truth=positive clarity=low stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:21",
+      "summary": "truth=positive clarity=low stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:22",
+      "summary": "truth=positive clarity=low stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:23",
+      "summary": "truth=positive clarity=low stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:24",
+      "summary": "truth=positive clarity=low stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:25",
+      "summary": "truth=positive clarity=medium stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:26",
+      "summary": "truth=positive clarity=medium stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:27",
+      "summary": "truth=positive clarity=medium stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:28",
+      "summary": "truth=positive clarity=medium stratum=on_time"
+    },
+    {
+      "tuple_id": "tpch:pilot:29",
+      "summary": "truth=positive clarity=medium stratum=on_time"
+    }
+  ]
+}

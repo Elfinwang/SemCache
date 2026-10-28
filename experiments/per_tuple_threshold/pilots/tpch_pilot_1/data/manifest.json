@@ -1,0 +1,6 @@
+{
+  "prompt_version": "gen-v1",
+  "generator_model": "llama-3.1-8b",
+  "n": 30,
+  "source": "rebuilt from printed output of Fir job 831503; tuple ids are stand-ins"
+}

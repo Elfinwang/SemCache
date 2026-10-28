@@ -1,0 +1,14 @@
+{
+  "output_dir": "experiments/per_tuple_threshold/pilots/tpch_pilot_1/run",
+  "tpch_dir": "experiments/per_tuple_threshold/pilots/tpch_pilot_1/data",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "llm_provider": "local",
+  "llm_model": "qwen/qwen3.8-27b",
+  "predicate_ids": null,
+  "pools_path": "experiments/per_tuple_threshold/pilots/tpch_pilot_1/run/generated_pools.json",
+  "label_cache_path": null,
+  "workers": 1,
+  "dataset": "tpch",
+  "generator_prompt_version": "gen-v1",
+  "generator_model": "llama-3.1-8b"
+}

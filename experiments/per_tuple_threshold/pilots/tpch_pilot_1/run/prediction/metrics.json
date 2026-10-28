@@ -1,0 +1,189 @@
+{
+  "dataset": "tpch",
+  "config": {
+    "run_dir": "experiments/per_tuple_threshold/results/tpch_local_run1/run",
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "calibration_fraction": 0.6666666666666666,
+    "margin_delta": 0.1,
+    "seed": 0,
+    "predicate_ids": null,
+    "training": {
+      "hidden_dim": 16,
+      "epochs": 400,
+      "learning_rate": 0.01,
+      "weight_decay": 0.01,
+      "seed": 0
+    }
+  },
+  "all_match_as_zero": false,
+  "feature_names": [
+    "log_word_count",
+    "exclamations",
+    "lexicon_positive",
+    "lexicon_negative",
+    "sim_enthusiastic",
+    "sim_mild",
+    "sim_negative",
+    "cached_answer"
+  ],
+  "predicates": [
+    {
+      "id": "tpch_positive",
+      "kind": "yes_no",
+      "population": "tpch_reviews",
+      "cost": {
+        "M": 30,
+        "N": 20,
+        "K": 20,
+        "llm_calls": 430,
+        "per_tuple_calibration_calls": 630
+      },
+      "n_training_tuples": 10,
+      "status": "ok",
+      "margin": 0.2,
+      "final_train_loss": 0.004165327176451683,
+      "loo_mae": 0.15179863572120667,
+      "target_mae": 0.034849156777064016,
+      "global_threshold": {
+        "t_hat": 0.158,
+        "gamma": 2.827,
+        "var_t": 0.0043686838611509266,
+        "reason": "ok"
+      },
+      "held_out": {
+        "paraphrase": {
+          "predicted": {
+            "decisions": 40,
+            "reuses": 16,
+            "correct_reuses": 16,
+            "false_reuses": 0,
+            "correct_rejects": 12,
+            "precision": 1.0,
+            "decision_accuracy": 0.7
+          },
+          "predicted_no_margin": {
+            "decisions": 40,
+            "reuses": 16,
+            "correct_reuses": 16,
+            "false_reuses": 0,
+            "correct_rejects": 12,
+            "precision": 1.0,
+            "decision_accuracy": 0.7
+          },
+          "oracle": {
+            "decisions": 40,
+            "reuses": 0,
+            "correct_reuses": 0,
+            "false_reuses": 0,
+            "correct_rejects": 12,
+            "precision": null,
+            "decision_accuracy": 0.3
+          },
+          "global": {
+            "decisions": 40,
+            "reuses": 40,
+            "correct_reuses": 28,
+            "false_reuses": 12,
+            "correct_rejects": 0,
+            "precision": 0.7,
+            "decision_accuracy": 0.7
+          }
+        },
+        "unrelated": {
+          "predicted": {
+            "decisions": 20,
+            "reuses": 4,
+            "correct_reuses": 4,
+            "false_reuses": 0,
+            "correct_rejects": 12,
+            "precision": 1.0,
+            "decision_accuracy": 0.8
+          },
+          "predicted_no_margin": {
+            "decisions": 20,
+            "reuses": 8,
+            "correct_reuses": 8,
+            "false_reuses": 0,
+            "correct_rejects": 12,
+            "precision": 1.0,
+            "decision_accuracy": 1.0
+          },
+          "oracle": {
+            "decisions": 20,
+            "reuses": 0,
+            "correct_reuses": 0,
+            "false_reuses": 0,
+            "correct_rejects": 12,
+            "precision": null,
+            "decision_accuracy": 0.6
+          },
+          "global": {
+            "decisions": 20,
+            "reuses": 20,
+            "correct_reuses": 8,
+            "false_reuses": 12,
+            "correct_rejects": 0,
+            "precision": 0.4,
+            "decision_accuracy": 0.4
+          }
+        },
+        "all": {
+          "predicted": {
+            "decisions": 60,
+            "reuses": 20,
+            "correct_reuses": 20,
+            "false_reuses": 0,
+            "correct_rejects": 24,
+            "precision": 1.0,
+            "decision_accuracy": 0.7333333333333333
+          },
+          "predicted_no_margin": {
+            "decisions": 60,
+            "reuses": 24,
+            "correct_reuses": 24,
+            "false_reuses": 0,
+            "correct_rejects": 24,
+            "precision": 1.0,
+            "decision_accuracy": 0.8
+          },
+          "oracle": {
+            "decisions": 60,
+            "reuses": 0,
+            "correct_reuses": 0,
+            "false_reuses": 0,
+            "correct_rejects": 24,
+            "precision": null,
+            "decision_accuracy": 0.4
+          },
+          "global": {
+            "decisions": 60,
+            "reuses": 60,
+            "correct_reuses": 36,
+            "false_reuses": 24,
+            "correct_rejects": 0,
+            "precision": 0.6,
+            "decision_accuracy": 0.6
+          }
+        }
+      },
+      "all_match_as_zero": false,
+      "predicted_by_clarity": {
+        "high": {
+          "n": 4,
+          "mean_predicted": 0.46447269013151526,
+          "mean_safe_threshold": 0.6644726901315152
+        },
+        "low": {
+          "n": 4,
+          "mean_predicted": 0.3772996924817562,
+          "mean_safe_threshold": 0.5772996924817562
+        },
+        "medium": {
+          "n": 2,
+          "mean_predicted": 0.4190017953515053,
+          "mean_safe_threshold": 0.6190017953515052
+        }
+      }
+    }
+  ]
+}
