@@ -5,7 +5,11 @@ import pytest
 
 from per_tuple_threshold.config import DEFAULT_LLM_MODELS, LLM_MODEL_ENV, LLM_PROVIDER_ENV, resolve_llm
 from per_tuple_threshold.llm.client import (
+    LOCAL_BASE_URL_ENV,
+    LOCAL_KEY_ENV,
+    LOCAL_PLACEHOLDER_KEY,
     PROVIDER_ANTHROPIC,
+    PROVIDER_LOCAL,
     PROVIDER_OPENAI,
     infer_provider,
     make_client,
@@ -14,7 +18,7 @@ from per_tuple_threshold.llm.client import (
 
 @pytest.fixture(autouse=True)
 def _clean_env(monkeypatch):
-    for name in (LLM_MODEL_ENV, LLM_PROVIDER_ENV):
+    for name in (LLM_MODEL_ENV, LLM_PROVIDER_ENV, LOCAL_BASE_URL_ENV, LOCAL_KEY_ENV):
         monkeypatch.delenv(name, raising=False)
 
 
@@ -109,3 +113,38 @@ def test_anthropic_client_reads_env(monkeypatch):
     assert client.complete([{"role": "user", "content": "q"}], max_tokens=16, temperature=0) == "NO"
     assert captured["api_key"] == "ak-test"
     assert captured["model"] == "claude-sonnet-4-5-20250929"
+
+
+def test_resolve_llm_selects_local_when_base_url_is_set(monkeypatch):
+    monkeypatch.setenv(LOCAL_BASE_URL_ENV, "http://localhost:8000/v1")
+    assert resolve_llm("llama-3.1-8b", None) == (PROVIDER_LOCAL, "llama-3.1-8b")
+    assert resolve_llm("gpt-4o-mini", PROVIDER_OPENAI) == (PROVIDER_OPENAI, "gpt-4o-mini")
+
+
+def test_resolve_llm_local_requires_a_model(monkeypatch):
+    with pytest.raises(ValueError, match="served model name"):
+        resolve_llm(None, PROVIDER_LOCAL)
+    monkeypatch.setenv(LLM_MODEL_ENV, "qwen2.5-14b")
+    assert resolve_llm(None, PROVIDER_LOCAL) == (PROVIDER_LOCAL, "qwen2.5-14b")
+
+
+def test_local_client_uses_base_url_and_placeholder_key(monkeypatch):
+    captured = {}
+    _install_fake_openai(monkeypatch, captured)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.setenv(LOCAL_BASE_URL_ENV, "http://localhost:8000/v1")
+    client = make_client(PROVIDER_LOCAL, "llama-3.1-8b")
+    assert client.complete([{"role": "user", "content": "q"}], max_tokens=16, temperature=0) == "YES"
+    assert captured["api_key"] == LOCAL_PLACEHOLDER_KEY
+    assert captured["base_url"] == "http://localhost:8000/v1"
+    assert captured["model"] == "llama-3.1-8b"
+
+    monkeypatch.setenv(LOCAL_KEY_ENV, "token-123")
+    make_client(PROVIDER_LOCAL, "llama-3.1-8b")
+    assert captured["api_key"] == "token-123"
+
+
+def test_local_client_requires_base_url(monkeypatch):
+    _install_fake_openai(monkeypatch, {})
+    with pytest.raises(RuntimeError, match=LOCAL_BASE_URL_ENV):
+        make_client(PROVIDER_LOCAL, "llama-3.1-8b")

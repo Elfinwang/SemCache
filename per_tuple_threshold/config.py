@@ -46,18 +46,33 @@ def default_embedding_model() -> str:
 def resolve_llm(model: str | None, provider: str | None) -> tuple[str, str]:
     """Return ``(provider, model)``.
 
-    The provider comes from the flag, then ``LLM_PROVIDER``, then the model
-    name (``gpt-*`` and ``o*`` models are OpenAI), then the default. A missing
-    model falls back to ``LLM_MODEL``, then the provider's default model.
+    The provider comes from the flag, then ``LLM_PROVIDER``, then ``local`` if
+    ``LLM_BASE_URL`` is set, then the model name (``gpt-*`` and ``o*`` models
+    are OpenAI), then the default. A missing model falls back to
+    ``LLM_MODEL``, then the provider's default model. ``local`` has no default
+    model: pass the server's served model name.
     """
-    from per_tuple_threshold.llm.client import infer_provider
+    from per_tuple_threshold.llm.client import (
+        LOCAL_BASE_URL_ENV,
+        PROVIDER_LOCAL,
+        PROVIDERS,
+        infer_provider,
+    )
 
     model = model or os.environ.get(LLM_MODEL_ENV)
     provider = provider or os.environ.get(LLM_PROVIDER_ENV)
     if provider is None:
-        provider = infer_provider(model) if model else DEFAULT_LLM_PROVIDER
-    if provider not in DEFAULT_LLM_MODELS:
-        raise ValueError(f"Unknown LLM provider {provider!r}; choose from {sorted(DEFAULT_LLM_MODELS)}.")
+        if os.environ.get(LOCAL_BASE_URL_ENV):
+            provider = PROVIDER_LOCAL
+        else:
+            provider = infer_provider(model) if model else DEFAULT_LLM_PROVIDER
+    if provider not in PROVIDERS:
+        raise ValueError(f"Unknown LLM provider {provider!r}; choose from {sorted(PROVIDERS)}.")
+    if model is None and provider not in DEFAULT_LLM_MODELS:
+        raise ValueError(
+            f"The {provider} provider has no default model; pass --llm-model "
+            f"(or {LLM_MODEL_ENV}) with the server's served model name."
+        )
     return provider, model or DEFAULT_LLM_MODELS[provider]
 
 

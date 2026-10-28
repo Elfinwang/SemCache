@@ -12,6 +12,7 @@ from pathlib import Path
 
 from per_tuple_threshold import config
 from per_tuple_threshold.embedding import configure_offline_mode
+from per_tuple_threshold.llm.client import LOCAL_BASE_URL_ENV, PROVIDERS
 from per_tuple_threshold.pipeline import io
 from per_tuple_threshold.predicates import PREDICATES
 from per_tuple_threshold.prediction.model import TrainingConfig
@@ -52,11 +53,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     calibrate.add_argument(
         "--llm-provider",
-        choices=sorted(config.DEFAULT_LLM_MODELS),
+        choices=sorted(PROVIDERS),
         default=None,
         help=(
             f"LLM provider for generation and labeling (env {config.LLM_PROVIDER_ENV}; "
-            "default: inferred from --llm-model, else anthropic)."
+            f"default: local if {LOCAL_BASE_URL_ENV} is set, else inferred from --llm-model, else anthropic)."
         ),
     )
     calibrate.add_argument(
@@ -65,7 +66,7 @@ def build_parser() -> argparse.ArgumentParser:
         help=(
             f"Model name (env {config.LLM_MODEL_ENV}; default per provider: "
             + ", ".join(f"{name}={model}" for name, model in config.DEFAULT_LLM_MODELS.items())
-            + ")."
+            + "; local: required, the server's served model name)."
         ),
     )
     calibrate.add_argument(

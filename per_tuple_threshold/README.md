@@ -296,12 +296,13 @@ mapping. The sampled tuples are fixed in `per_tuple_threshold/data/sample_ids.js
 
 ### 5.2 LLM provider and API key
 
-Query generation and labeling use one LLM, from either provider:
+Query generation and labeling use one LLM, from one of three providers:
 
-| Provider | API | Default model | Key | Endpoint (optional) |
+| Provider | API | Default model | Key | Endpoint |
 |---|---|---|---|---|
-| `anthropic` (default) | Messages API | `claude-sonnet-4-5-20250929` | `ANTHROPIC_AUTH_TOKEN` or `ANTHROPIC_API_KEY` | `ANTHROPIC_BASE_URL` |
-| `openai` | Chat Completions API | `gpt-4o-mini` | `OPENAI_API_KEY` | `OPENAI_BASE_URL` |
+| `anthropic` (default) | Messages API | `claude-sonnet-4-5-20250929` | `ANTHROPIC_AUTH_TOKEN` or `ANTHROPIC_API_KEY` | `ANTHROPIC_BASE_URL` (optional) |
+| `openai` | Chat Completions API | `gpt-4o-mini` | `OPENAI_API_KEY` | `OPENAI_BASE_URL` (optional) |
+| `local` | Chat Completions API on your own server (e.g. vLLM) | none: pass the served model name | `LLM_API_KEY` (optional) | `LLM_BASE_URL` (**required**) |
 
 Keys are read **only from environment variables**; never put them in code or
 commit them.
@@ -322,18 +323,31 @@ export OPENAI_BASE_URL="https://api.camel-hub.com/v1"  # optional OpenAI-compati
 python -m per_tuple_threshold calibrate --llm-provider openai --llm-model gpt-4o
 ```
 
-How the provider is chosen: `--llm-provider`, then `LLM_PROVIDER`, then the
-model name (`gpt-*`, `chatgpt-*`, `o1*`, `o3*`, `o4*` are OpenAI; others are
-Anthropic). `--llm-model gpt-4.1` therefore selects OpenAI on its own. Without
-a model, `LLM_MODEL` or the provider's default model is used. Through an
-OpenAI-compatible gateway, `--llm-provider openai` also works with non-GPT model
-names, e.g. `--llm-provider openai --llm-model claude-sonnet-4-5-20250929`.
+**Local server (e.g. vLLM on a GPU node, no internet needed):**
+
+```bash
+vllm serve /path/to/Qwen2.5-14B-Instruct --served-model-name qwen2.5-14b --port 8000 &
+export LLM_BASE_URL="http://localhost:8000/v1"        # selects the local provider
+python -m per_tuple_threshold calibrate --llm-model qwen2.5-14b
+```
+`--llm-model` must equal the server's `--served-model-name`. No key is needed;
+set `LLM_API_KEY` only if your server checks one.
+
+How the provider is chosen: `--llm-provider`, then `LLM_PROVIDER`, then `local`
+if `LLM_BASE_URL` is set, then the model name (`gpt-*`, `chatgpt-*`, `o1*`,
+`o3*`, `o4*` are OpenAI; others are Anthropic). `--llm-model gpt-4.1` therefore
+selects OpenAI on its own. Without a model, `LLM_MODEL` or the provider's
+default model is used; `local` has no default and stops with an error. Through
+an OpenAI-compatible gateway, `--llm-provider openai` also works with non-GPT
+model names, e.g. `--llm-provider openai --llm-model claude-sonnet-4-5-20250929`.
 
 Notes:
 
 - Use a non-reasoning chat model with OpenAI (GPT-4o, GPT-4.1 families). Labels
   are requested with `max_tokens=16` and `temperature=0`. Reasoning models
   (o-series, GPT-5) reject these parameters or spend the token budget on reasoning.
+  The same applies to `local`: serve an instruct model with thinking disabled
+  (e.g. Qwen2.5-Instruct, Llama-3.1-Instruct), not a reasoning model.
 - The label cache key is `sha256(model, kind, prompt)`. Changing the model
   therefore never reuses another model's answers. To compare models, run stage 1
   once per model and use a separate `--output` for each.
@@ -404,7 +418,7 @@ python -m per_tuple_threshold calibrate
 ```
 
 Use a non-reasoning chat model for OpenAI (GPT-4o / GPT-4.1 families); see 5.2.
-Both providers write the same output files. The label cache is keyed by model
+All providers write the same output files. The label cache is keyed by model
 name, so give each model its own `--output` directory when comparing models.
 
 Useful options:
@@ -492,12 +506,14 @@ short summary table to the terminal.
 |---|---|---|---|
 | SemBench checkout | `--sembench-root` | `SEMBENCH_ROOT` | `../SemBench` (sibling of this repo) |
 | Embedding model | `--embedding-model` | `EMBEDDING_MODEL` | `Qwen/Qwen3-Embedding-8B` |
-| LLM provider | `--llm-provider` | `LLM_PROVIDER` | inferred from the model name, else `anthropic` |
-| LLM model | `--llm-model` | `LLM_MODEL` | `claude-sonnet-4-5-20250929` (anthropic), `gpt-4o-mini` (openai) |
+| LLM provider | `--llm-provider` | `LLM_PROVIDER` | `local` if `LLM_BASE_URL` is set, else inferred from the model name, else `anthropic` |
+| LLM model | `--llm-model` | `LLM_MODEL` | `claude-sonnet-4-5-20250929` (anthropic), `gpt-4o-mini` (openai), none (local) |
 | Anthropic API key | - | `ANTHROPIC_AUTH_TOKEN` or `ANTHROPIC_API_KEY` | required for uncached Anthropic calls |
 | Anthropic endpoint | - | `ANTHROPIC_BASE_URL` | `api.anthropic.com` |
 | OpenAI API key | - | `OPENAI_API_KEY` | required for uncached OpenAI calls |
 | OpenAI endpoint | - | `OPENAI_BASE_URL` | `api.openai.com` |
+| Local server endpoint | - | `LLM_BASE_URL` | required for `local` (e.g. `http://localhost:8000/v1`) |
+| Local server key | - | `LLM_API_KEY` | optional; a placeholder is sent when unset |
 | Output directory | `--output` | - | `experiments/per_tuple_threshold/results/run_<timestamp>` |
 | Parallel LLM requests | `--workers` | - | 8 |
 
